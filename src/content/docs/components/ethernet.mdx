@@ -212,12 +212,6 @@ If you are using a framework that does not support SPI polling mode,
   - **dns1** (*Optional*, IPv4 address): The main DNS server to use.
   - **dns2** (*Optional*, IPv4 address): The backup DNS server to use.
 
-- **enable_ipv4** (*Optional*, boolean): Set to `false` to connect without IPv4, for networks that
-  only offer IPv6 (SLAAC) and no DHCPv4. Only `esp32` supports `false`. Works the same as the
-  [WiFi option](/components/wifi#wifi-ipv6-only). `false` requires `enable_ipv6: true` and
-  `min_ipv6_addr_count` of at least `1` in the [Network](/components/network/) component, and can't be
-  used with `manual_ip`. Defaults to `true`.
-
 - **use_address** (*Optional*, string): Manually override what address to use to connect
   to the ESP. Defaults to auto-generated value. For example, if you have changed your
   static IP and want to flash OTA to the previously configured IP address.
