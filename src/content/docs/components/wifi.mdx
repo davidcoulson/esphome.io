@@ -59,6 +59,12 @@ wifi:
   - **dns1** (*Optional*, IPv4 address): The main DNS server to use.
   - **dns2** (*Optional*, IPv4 address): The backup DNS server to use.
 
+- **ipv6_only** (*Optional*, boolean): Only on `esp32`. Connect without IPv4, for networks that
+  only offer IPv6 (SLAAC) and no DHCPv4. The DHCPv4 client is not started and the connection counts
+  as up once the node has `min_ipv6_addr_count` IPv6 addresses. Requires `enable_ipv6: true` and
+  `min_ipv6_addr_count` of at least `1` in the [Network](/components/network/) component, and can't be
+  used with `manual_ip`. See [IPv6-only networks](#wifi-ipv6_only). Defaults to `false`.
+
 - **use_address** (*Optional*, string): Manually override what address to use to connect
   to the ESP. Defaults to auto-generated value. Example, if you have changed your static IP and want to flash OTA to
   the previously configured IP address.
@@ -245,6 +251,31 @@ the OTA process will automatically choose that as the target for the upload.
 
 > [!NOTE]
 > See also [Changing ESPHome Node Name](/components/esphome#esphome-changing_node_name).
+
+<span id="wifi-ipv6_only"></span>
+
+## IPv6-only networks
+
+By default the node waits for an IPv4 address from DHCP before it counts as connected. On a network
+that only hands out IPv6 addresses, set `ipv6_only: true`:
+
+```yaml
+network:
+  enable_ipv6: true
+  min_ipv6_addr_count: 2
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ipv6_only: true
+```
+
+With `min_ipv6_addr_count: 2` the node waits for its link-local address and one address from the
+router. Use `1` only if Home Assistant is on the same network segment.
+
+DNS servers are taken from the router advertisement (RDNSS) or from stateless DHCPv6. Anything the
+node itself connects to, like an NTP or MQTT server, must be reachable over IPv6. Each connect logs
+one harmless `invalid static ip` error from `esp_netif_handlers`.
 
 ## Power Save Mode
 
