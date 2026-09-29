@@ -64,6 +64,9 @@ DNS servers are taken from the router advertisement (RDNSS) or from stateless DH
 node itself connects to, like an NTP or MQTT server, must be reachable over IPv6. Each connect logs
 one harmless `invalid static ip` error from `esp_netif_handlers`.
 
+The node can't resolve `.local` names in this mode, so give anything it fetches from, like the Home
+Assistant URL used for TTS, a regular DNS name with an AAAA record.
+
 ## High-performance networking
 
 The network component can automatically apply optimized settings for components that require high throughput or low latency, such as media streaming. When enabled, this feature configures both the lwIP TCP/IP stack and WiFi driver with settings optimized for performance.
